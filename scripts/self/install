@@ -18,6 +18,10 @@ installer::install_zsh() {
   fi
 }
 
+installer::install_dependencies() {
+  dot package install fzf 2>&1 && output::solution "fzf installed!" || exit 6
+}
+
 ##? Install dotly and setup dotfiles
 #?? 1.0.0
 ##?
@@ -46,6 +50,9 @@ if ! str::contains zsh "$SHELL"; then
   chsh -s "$(command -v zsh)"
 fi
 
+output::answer "Installing dependencies"
+installer::install_dependencies
+
 output::answer "Installing Zim"
 
-zsh "$ZIM_HOME/zimfw.zsh" install
+zsh "$ZIM_HOME/zimfw.zsh" install  2>&1
